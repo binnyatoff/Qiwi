@@ -6,6 +6,8 @@ import javax.xml.bind.annotation.XmlRootElement
 @XmlRootElement
 data class Valute(
     @XmlAttribute
+    val id:String,
+    @XmlAttribute
     val numCode: String,
     @XmlAttribute
     val charCode: String,

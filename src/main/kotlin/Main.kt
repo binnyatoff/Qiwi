@@ -22,7 +22,12 @@ suspend fun getCurrencyRates(code: String, date: String) = coroutineScope {
         val response: Response<ValCurs> = retrofit().getCurrencyRates(date)
         if (response.isSuccessful) {
             val body = response.body()
-            println(body.toString())
+            if (body != null) {
+                println(body.toString())
+                println(getValuteValue(code, body))
+            }else{
+                println("Body is null")
+            }
         } else {
             println(response.code())
         }
@@ -30,6 +35,17 @@ suspend fun getCurrencyRates(code: String, date: String) = coroutineScope {
         println(e.toString())
     }
 
+}
+
+fun getValuteValue(code: String, valCurs: ValCurs): String {
+    valCurs.valute.forEach { valute ->
+        return if (valute.charCode == code) {
+            valute.value
+        } else {
+            "Not Found"
+        }
+    }
+    return "Not Found"
 }
 
 fun retrofit(): Api {

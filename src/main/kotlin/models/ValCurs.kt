@@ -1,6 +1,5 @@
 package models
 
-import javax.xml.bind.annotation.XmlAnyElement
 import javax.xml.bind.annotation.XmlAttribute
 import javax.xml.bind.annotation.XmlElement
 import javax.xml.bind.annotation.XmlRootElement
@@ -13,5 +12,4 @@ data class ValCurs(
     val name: String,
     @XmlElement
     val valute: List<Valute>
-
 )
