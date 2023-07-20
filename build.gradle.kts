@@ -11,18 +11,14 @@ version = "1.0-SNAPSHOT"
 repositories {
     mavenCentral()
 }
-val ktor_version: String by project
-val slf4j_version: String by project
+
 dependencies {
-    implementation("io.ktor:ktor-client-core:$ktor_version")
-    implementation("io.ktor:ktor-client-cio:$ktor_version")
-    implementation("org.simpleframework:simple-xml:2.7.1")
-    compileOnly ("org.slf4j:slf4j-api:$slf4j_version")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2")
 
     //Retrofit
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
     implementation ("com.squareup.retrofit2:converter-gson:2.5.0")
-
+    implementation("com.squareup.retrofit2:converter-jaxb:2.5.0")
 
     //OkHTTP
     implementation ("com.squareup.okhttp3:okhttp:4.8.0")
