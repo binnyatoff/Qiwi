@@ -14,10 +14,9 @@ repositories {
 
 dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.2")
-
+    implementation("com.squareup.retrofit2:converter-simplexml:2.9.0")
     //Retrofit
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation ("com.squareup.retrofit2:converter-gson:2.5.0")
     implementation("com.squareup.retrofit2:converter-jaxb:2.5.0")
 
     //OkHTTP

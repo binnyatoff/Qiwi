@@ -5,14 +5,14 @@ import java.text.SimpleDateFormat
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.converter.jaxb.JaxbConverterFactory
+import retrofit2.converter.simplexml.SimpleXmlConverterFactory
+import kotlin.system.exitProcess
 
 suspend fun main(args: Array<String>) {
-    val code = "USD"
-    val date = "2022-10-08"
+    //Example input USD 2022-10-08
+    val (code, date) = readln().split(' ')
     val pattern = SimpleDateFormat("yyyy-MM-dd").parse(date)
     val formatter = SimpleDateFormat("dd/MM/yyyy").format(pattern)
-    println(formatter)
     getCurrencyRates(code, formatter)
 }
 
@@ -23,9 +23,11 @@ suspend fun getCurrencyRates(code: String, date: String) = coroutineScope {
         if (response.isSuccessful) {
             val body = response.body()
             if (body != null) {
-                println(body.toString())
-                println(getValuteValue(code, body))
-            }else{
+                if (!getValuteValue(code, body)){
+                    println("Error")
+                }
+                exitProcess(130)
+            } else {
                 println("Body is null")
             }
         } else {
@@ -37,15 +39,21 @@ suspend fun getCurrencyRates(code: String, date: String) = coroutineScope {
 
 }
 
-fun getValuteValue(code: String, valCurs: ValCurs): String {
-    valCurs.valute.forEach { valute ->
-        return if (valute.charCode == code) {
-            valute.value
-        } else {
-            "Not Found"
+fun getValuteValue(code: String, valCurs: ValCurs):Boolean {
+    if (valCurs.valute != null) {
+        valCurs.valute!!.forEach { valute ->
+            if (valute.charCode == code) {
+                if (valute.value != null) {
+                    println(" ${valute.charCode} - ${valute.value}")
+                    return true
+                }
+            }
         }
+    } else {
+        println("Not Found")
+        return true
     }
-    return "Not Found"
+    return false
 }
 
 fun retrofit(): Api {
@@ -58,7 +66,7 @@ fun retrofit(): Api {
     val retrofit = Retrofit.Builder()
         .baseUrl("https://www.cbr.ru")
         .client(okHttpClient)
-        .addConverterFactory(JaxbConverterFactory.create())
+        .addConverterFactory(SimpleXmlConverterFactory.create())
         .build()
 
     return retrofit.create(Api::class.java)
